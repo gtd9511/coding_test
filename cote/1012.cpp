@@ -10,7 +10,6 @@ int bfs()
 	bool visited[50][50] = { false };
 	queue<pair<int, int> > muqueue;
 //	visited[x][y] = true;
-
 }
 
 int main ()
