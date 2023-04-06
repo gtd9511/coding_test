@@ -4,35 +4,33 @@
 using namespace std;
 
 char map[10][10];
+bool visited[10][10][10][10] = { false, };
 
-struct INFO {
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, 1, 0, -1};
+
+struct INFO
+{
 	int rx, ry, bx, by, cnt;
 };
 
 INFO start;
 
-int dx[4] = {-1, 0, 1, 0};
-int dy[4] = {0, 1, 0, -1};
-
 int bfs()
 {
-	bool visited[10][10][10][10] = { false, };
 	int ret = -1;
-
 	queue<INFO> myqueue;
 	myqueue.push(start);
 	visited[start.rx][start.ry][start.bx][start.by] = true;
 	while (!myqueue.empty())
 	{
-		INFO cur = myqueue.front();
+		INFO cur;
+		cur = myqueue.front();
 		myqueue.pop();
 		if (cur.cnt > 10)
-			break;
+			return (-1);
 		if (map[cur.rx][cur.ry] == 'O' && map[cur.bx][cur.by] != 'O')
-		{
-			ret = cur.cnt;
-			break;
-		}
+			return (cur.cnt);
 		for (int i = 0; i < 4; i++)
 		{
 			int nrx = cur.rx;
@@ -79,23 +77,27 @@ int bfs()
 			{
 				if (map[nrx][nry] != 'O')
 				{
-					int red_dist = abs(nrx - cur.rx) + abs(nry - cur.ry);
-					int blue_dist = abs(nbx - cur.bx) + abs(nby - cur.by);
-					if (red_dist > blue_dist)
+					if (i == 0 || i == 2)
 					{
-						nry -= dy[i];
-						nrx -= dx[i];
+						if (abs(nrx - cur.rx) > abs(nbx - cur.bx))
+							nrx -= dx[i];
+						else
+						 	nbx -= dx[i];
 					}
-					else
+					if (i == 1 || i == 3)
 					{
-						nbx -= dx[i];
-						nby -= dy[i];
+						if (abs(nry - cur.ry) > abs(nby - cur.by))
+							nry -= dy[i];
+						else
+						 	nby -= dy[i];
 					}
 				}
 			}
-			if (visited[nrx][nry][nbx][nby] == 0)
+
+
+			if (visited[nrx][nry][nbx][nby] == false)
 			{
-				visited[nrx][nry][nbx][nby] = 1;
+				visited[nrx][nry][nbx][nby] = true;
 				INFO next;
 				next.rx = nrx;
 				next.ry = nry;
@@ -117,6 +119,9 @@ int main()
 
 	int N, M;
 	cin >> N >> M;
+	if (N < 3 || N > 11 || M < 3 || M > 11)
+		return (-1);
+
 	for (int i = 0; i < N; i++)
 	{
 		for (int j = 0; j < M; j++)
@@ -135,6 +140,7 @@ int main()
 		}
 	}
 	start.cnt = 0;
+
 	cout << bfs() << endl;
 	return (0);
 }

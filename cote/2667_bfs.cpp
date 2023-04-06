@@ -1,15 +1,51 @@
 #include <iostream>
 #include <vector>
-
+#include <queue>
+#include <algorithm>
 using namespace std;
+#define MAX 25
 
-bool visited [25][25] = { false };
+int N;
+int groups[MAX * MAX];
+int group_id;
 
-void dfs(int x, int y)
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, 1, 0, -1};
+
+int map[MAX][MAX];
+bool visited[MAX][MAX] = { false, };
+
+void bfs(int x, int y)
 {
+	queue<pair<int, int> > myqueue;
 	visited[x][y] = true;
 
-	if (!visited[x][y] && )
+	myqueue.push(make_pair(x, y));
+	groups[group_id]++;
+
+	while(!myqueue.empty())
+	{
+		x = myqueue.front().first;
+		y = myqueue.front().second;
+		myqueue.pop();
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+
+			if (0 <= nx && nx < N && 0 <= ny && ny < N)
+			{
+				if (map[nx][ny] == 1 && !visited[nx][ny])
+				{
+					visited[nx][ny] = true;
+					groups[group_id]++;
+
+					myqueue.push(make_pair(nx, ny));
+				}
+			}
+		}
+	}
 
 }
 
@@ -19,6 +55,33 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	return (0);
+	cin >> N;
 
+	for (int i = 0; i < N; i++)
+	{
+		string input;
+		cin >> input;
+		for (int j = 0; j < N; j++)
+			map[i][j] = input.at(j) - '0';
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			if (map[i][j] == 1 && !visited[i][j])
+			{
+				group_id++;
+				bfs(i, j);
+			}
+
+		}
+	}
+
+	cout << group_id << endl;
+	sort(groups + 1, groups + group_id + 1);
+	for (int i = 1; i <= group_id; i++)
+		cout << groups[i] << endl;
+	return (0);
 }
+

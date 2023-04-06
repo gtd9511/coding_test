@@ -1,4 +1,3 @@
-re
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -15,6 +14,7 @@ int bfs(int N, int K, int cnt)
 	{
 		N = myqueue.front().first;
 		cnt = myqueue.front().second;
+		//cout << "T : " << N << " cnt : " << cnt << endl;
 		myqueue.pop();
 		if (N == K)
 			return cnt;
