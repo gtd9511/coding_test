@@ -1,25 +1,16 @@
-#include <ios>
 #include <iostream>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 
 int map[1000][1000];
-bool visited[1000][1000];
-
-int day;
+int dist[1000][1000];
 
 queue<pair<int, int> > myqueue;
 
-
-int bfs()
-{
-	int ret = -1;
-
-
-
-	return (ret);
-}
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, 1, 0, -1};
 
 int main()
 {
@@ -38,9 +29,40 @@ int main()
 			cin >> map[i][j];
 			if (map[i][j] == 1)
 				myqueue.push(make_pair(i, j));
+			if (map[i][j] == 0)
+				dist[i][j] = -1;
 		}
 	}
-	day = 0;
-	cout << bfs() << endl;
+	while (!myqueue.empty())
+	{
+		int x = myqueue.front().first;
+		int y = myqueue.front().second;
+		myqueue.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			if (nx < 0 || nx >= N || ny < 0 || ny >= M)
+				continue;
+			if (dist[nx][ny] >= 0)
+				continue;
+			dist[nx][ny] = dist[x][y] + 1;
+			myqueue.push(make_pair(nx, ny));
+		}
+	}
+	int ret = 0;
+	for (int i = 0; i < N; i ++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			if (dist[i][j] == - 1)
+			{
+				cout << -1;
+				return (0);
+			}
+			ret = max(ret, dist[i][j]);
+		}
+	}
+	cout << ret;
 	return (0);
 }
