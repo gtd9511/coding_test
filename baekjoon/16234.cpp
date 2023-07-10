@@ -5,7 +5,7 @@ using namespace std;
 int N, L, R;
 int map[50][50];
 bool visited[50][50];
-int dx[4] = {-1, 0, 1, 0}; // 북 동 남  서
+int dx[4] = {-1, 0, 1, 0}; // 북 동 남 서
 int dy[4] = {0, 1, 0, -1};
 
 void bfs(int x, int y)
