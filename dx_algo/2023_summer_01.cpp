@@ -1,151 +1,205 @@
+//ANSWER CODE
+
 #include <iostream>
-#include <iterator>
 #include <vector>
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 
-int T, N, M, C, TestCase;
-// vector<int> graph[401];
-int map[401][401] = {0, };
+int T, N, M, TestCase;
+
+int map[401][401] = {0,};
+int tempmap[401][401] = {0, };
 bool visited[401][401] = {0, };
-vector<int> totallist;
+int flag[401] = {0, };
+int total;
+
+// vector<int> totallist;
+
+// void print_vector(vector<int> vec)
+// {
+// 	vector<int>::iterator iter;
+// 	cout << "totallist : ";
+// 	for (iter =  vec.begin(); iter !=  vec.end(); iter++)
+// 		cout << *iter << " ";
+// 	cout << endl;
+// }
+
+void print_map()
+{
+	for (int i = 1; i < N + 1; i++)
+	{
+		for (int j = 1; j < N + 1; j++)
+			cout << map[i][j] << " ";
+		cout << endl;
+	}
+	cout << endl;
+}
+
+void solo(int x)
+{
+	for (int i = 1; i < N + 1; i++)
+	{
+		map[x][i] = 0;
+		map[i][x] = 0;
+	}
+}
+
+int cnt_receive(int x)
+{
+	int cnt = 0;
+	for (int i = 1; i < N + 1; i++)
+	{
+		if (map[i][x] != 0)
+			cnt++;
+	}
+	return (cnt);
+}
+
+int cnt_give(int x)
+{
+	int cnt = 0;
+	for (int i = 1; i < N + 1; i++)
+	{
+		if (map[x][i] != 0)
+			cnt++;
+	}
+	return (cnt);
+}
+
 void reset_case()
 {
-	for (int i = 0; i < 401; i++)
+	for (int i = 1; i < 401; i++)
 	{
-		for (int j = 0; j < 401; j++)
+		for (int j = 1; j < 401; j++)
 		{
 			map[i][j] = 0;
+			tempmap[i][j] = 0;
 			visited[i][j] = false;
 		}
 	}
-	totallist.clear();
+	// totallist.clear();
 }
 
 void reset_visited()
 {
-	for (int i = 0; i < 401; i++)
+	for (int i = 1; i < N + 1; i++)
 	{
-		for (int j = 0; j < 401; j++)
+		for (int j = 1; j < N + 1; j++)
 			visited[i][j] = false;
 	}
 }
 
-int recur(int x, int start_point,int recurtotal)
+void recur(int cur_point, int start_point, int cost)
 {
-	for (int i = 0; i < 401; i++)
-		visited[i][x] = true;
-	cout << "x : " << x << endl;
+	int res_cost = cost;
 	for (int i = 1; i < N + 1; i++)
+		visited[i][cur_point] = true;
+	//
+	// cout << "|current point : " << cur_point << " start_point : " << start_point << " res_cost : " << res_cost << endl;
+	for (int next_point = 1; next_point < N + 1; next_point++)
 	{
-		bool flag = 0;
-		recurtotal += map[x][i];
-		cout << "x: " << x << " i : " << i << " start_point: " << start_point << " recur total : " << recurtotal << endl;
-		if (i == start_point && map[x][i] != 0 && flag == 1)
+		if (flag[next_point] == 0 && map[cur_point][next_point] != 0)
 		{
-			recurtotal += map[x][i];
-			cout << "A" << endl;
-			// vector<int>::iterator iter2;
-			// cout << endl << endl << totallist.size() << " before totallist : ";
-			// for (iter2 = totallist.begin(); iter2 != totallist.end(); iter2++)
-			// 	cout << *iter2 << " ";
-			// cout << endl;
-			cout << "recurtotal : " << recurtotal << endl;
-			totallist.push_back(recurtotal);
-			recurtotal = 0;
-			return (recurtotal);
-			// vector<int>::iterator iter3;
-			// cout << endl << endl << totallist.size() << " after totallist : ";
-			// for (iter3 = totallist.begin(); iter3 != totallist.end(); iter3++)
-			// 	cout << *iter3 << " ";
-			// cout << endl;
-
-			// return (recurtotal);
+			if (next_point == start_point)
+			{
+				res_cost += map[cur_point][next_point];
+				//
+				// cout << "|********End Cycle // cost : " << res_cost << endl;
+				// totallist.push_back(res_cost);
+				if (total > res_cost)
+					total = res_cost;
+				flag[next_point] = 1;
+			}
+			if (!visited[cur_point][next_point])
+			{
+				//
+				// cout << "|next point : " << next_point << " plus : " << map[cur_point][next_point] << endl;
+				res_cost += map[cur_point][next_point];
+				if (res_cost < total)
+					recur(next_point, start_point, res_cost);
+			}
 		}
-		if (map[x][i] != 0 && (!visited[x][i]))
-		{
-			flag = 1;
-			cout << "next : " << i << endl;
-			cout << "=---- recur :" << recurtotal << " x: " << x << " i: " << i << endl;
-			recur(i, start_point, recurtotal);
-		}
-		recurtotal = 0;
+		res_cost = cost;
 	}
-	return (0);
 }
 
-int manitto(int n, int m)
+int manito(int n, int m)
 {
-	int total = 0;
+	total = 2147483647;
 	for (int i = 0; i < m; i++)
 	{
 		int from, to, cash;
 		cin >> from >> to >> cash;
-		// graph[a].push_back(b);
 		map[from][to] = cash;
+		tempmap[from][to] = cash;
 		if (from == to)
-			totallist.push_back(cash);
-	}
-	cout << endl << endl;
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
 		{
-			cout << map[i + 1][j + 1] << " ";
+			map[from][to] = 0;
+			tempmap[from][to] = 0;
+			//
+			// cout << "|********SAME CASE : " << cash << endl;
+			// totallist.push_back(cash);
+			if (total > cash)
+				total = cash;
 		}
-		cout << endl;
 	}
-	cout << endl << endl;
+	// print_map();
+	for (int i = 1; i < n + 1; i++)
+	{
+		// cout << "i :" << i << " rec : " << cnt_receive(i) << " giv : " << cnt_give(i) << endl;
+		if (cnt_receive(i) * cnt_give(i) == 0)
+			solo(i);
+	}
+	// print_map();
 	for (int i = 1; i < n + 1; i++)
 	{
 		reset_visited();
+		flag[i] = 0;
 		int start_point = i;
-		int recurtotal = 0;
-		cout << "START POINT : " << start_point << endl;
-		recurtotal = recur(i, start_point, recurtotal);
-		// vector<int>::iterator iter4;
-		// cout << endl << endl << "--------------------------totallist : ";
-		// for (iter4 = totallist.begin(); iter4 != totallist.end(); iter4++)
-		// 	cout << *iter4 << " ";
-		// cout << endl;
-		// cout << "C :" << recurtotal << endl;
+		for (int j = 1; j < n + 1; j++)
+		{
+			// copy(&map[0][0], &map[0][0] + 401 * 401, &tempmap[0][0]);
+			if (map[i][j] * map[j][i] > 0)
+			{
+				//
+				// cout << "|********EACH CASE : " << map[i][j] + map[j][i] << endl;
+				// totallist.push_back(map[i][j] + map[j][i]);
+				if (total > map[i][j] + map[j][i])
+					total = map[i][j] + map[j][i];
+				map[i][j] = 0;
+				map[j][i] = 0;
+			}
+		}
+		recur(i, start_point, 0);
+		// copy(&tempmap[0][0], &tempmap[0][0] + 401 * 401, &map[0][0]);
 	}
-
-	vector<int>::iterator iter;
-	cout << endl << endl << "totallist : ";
-	for (iter = totallist.begin(); iter != totallist.end(); iter++)
-		cout << *iter << " ";
-	cout << endl;
-	//그래프 탐색
-	//cash 합 totallist push_back
-
-	sort(totallist.begin(), totallist.end());
-	total = totallist[0];
+	// sort(totallist.begin(), totallist.end());
+	// if (!totallist.empty())
+	// 	total = totallist[0];
+	// else
+	if (total == 2147483647)
+		total = -1;
 	return (total);
 }
 
-int main ()
-{
-	cin >> T;
-	TestCase = T;
 
-	while (T--)
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	cin >> T;
+
+	for (int i = 1; i <= T; i++)
 	{
 		reset_case();
 		cin >> N >> M;
-		cout << "AAA" << endl;
-		int lowtotal = manitto(N, M);
-		cout << "#" << TestCase - T << " " << lowtotal << endl;
+		int ans = manito(N, M);
+		cout << "#" << i << " " << ans << endl;
 	}
 
 	return (0);
-}
-
-
-int check_friend(int x)
-{
-	int temp = 0;
-	for (int i = 0; i < 401; i++)
-		temp += map[x][i];
-	return (temp);
 }
