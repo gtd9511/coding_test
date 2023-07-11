@@ -21,7 +21,7 @@ void print_map(int** A)
 	cout << endl;
 }
 
-void print_int(int** A)
+void print_bool(bool** A)
 {
 	cout << endl;
 	cout << "--------------------------------" << endl;
@@ -35,7 +35,7 @@ void print_int(int** A)
 	cout << endl;
 }
 
-void solve(int** A, int** flag, int x, int y)
+int solve(int** A, bool** flag)
 {
 	int temp_x = 0;
 	int temp_y = 0;
@@ -75,7 +75,7 @@ void solve(int** A, int** flag, int x, int y)
 	}
 	// A[temp_x][temp_y] = 10000001;
 	// print_map(A);
-	// print_int(flag);
+	// print_bool(flag);
 	// cout << "min : " << min << endl;
 	// cout << "temp_x : " << temp_x << endl;
 	// cout << "temp_y : " << temp_y << endl;
@@ -86,31 +86,32 @@ void solve(int** A, int** flag, int x, int y)
 int each_case()
 {
 	ans = 0;
+	int totaltime = 0;
 	cin >> N >> M >> Q;
 
+	if (N > M)
+		totaltime = M;
+	else
+	 	totaltime = N;
+
+	ans += totaltime;
 	// cout << endl << "Low : " << ans << endl;
 	int** A = new int*[N + 1];
-	int** flag = new int*[N + 1];
+	bool** flag = new bool*[N + 1];
 	for (int i = 0; i < N + 1; i++)
 	{
 		A[i] = new int[M + 1];
-		flag[i] = new int[M + 1];
+		flag[i] = new bool[M + 1];
 	}
 
 	for (int i = 1; i < N + 1; i++)
 	{
-		int min = 10000001;
 		for (int j = 1; j < M + 1; j++)
 		{
 			cin >> A[i][j];
 			flag[i][j] = 0;
-			if (min > A[i][j])
-			{
-				min = A[i][j];
-				flag[i][j] = 1;
-			}
 		}
-	}// min  flag 미리 계산해주고 flag에 대해서만 확인해주기
+	}
 	// print_map(A);
 	for (int i = 0; i < Q; i++)
 	{
@@ -119,8 +120,11 @@ int each_case()
 		A[r][c] = x;
 	}
 	// print_map(A);
-
-	// solve(A, flag, 1, 1);
+	for (int i = 0; i < totaltime; i++)
+	{
+		ans += solve(A, flag);
+		// cout << "total : " << ans << endl;
+	}
 	// ans += total;
 
 	for (int i = 0; i < N; i++)
