@@ -198,8 +198,7 @@ int main()
 		reset_case();
 		cin >> N >> M;
 		int ans = manito(N, M);
-		cout << "#" << i << " " << ans << endl;
+		cout << "#" << i << " " << ans << "\n";
 	}
-
 	return (0);
 }
