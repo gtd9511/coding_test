@@ -31,7 +31,7 @@ int main()
 			int a = min(arr[i], min(arr[i + 1], arr[i + 2]));
 			ans += 7 * a;
 			arr[i] -= a;
-			arr[i + 1] -=a ;
+			arr[i + 1] -= a;
 			arr[i + 2] -= a;
 
 			int b = min(arr[i], arr[i + 1]);
