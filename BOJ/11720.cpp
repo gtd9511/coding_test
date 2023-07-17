@@ -10,12 +10,12 @@ int main()
 	int N;
 	int ans = 0;
 	cin >> N;
-	char str[100];
-	for (int i = 0; i < 100; i++)
+	char str[110];
+	for (int i = 0; i < 110; i++)
 		str[i] = '0';
 	cin.ignore();
-	cin.getline(str, 100);
-	for (int i = 0; i < 100; i++)
+	cin.getline(str, 110);
+	for (int i = 0; i < 110; i++)
 	{
 		if ((str[i] - '0' >= 0) && (str[i] - '0') < 10)
 		{
