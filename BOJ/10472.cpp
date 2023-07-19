@@ -17,6 +17,7 @@ void select_tile(int x)
 		temptile[0] = !temptile[0];
 		temptile[1] = !temptile[1];
 		temptile[3] = !temptile[3];
+		ans++;
 	}
 	else if (x == 1)
 	{
@@ -24,12 +25,14 @@ void select_tile(int x)
 		temptile[1] = !temptile[1];
 		temptile[2] = !temptile[2];
 		temptile[4] = !temptile[4];
+		ans++;
 	}
 	else if (x == 2)
 	{
 		temptile[1] = !temptile[1];
 		temptile[2] = !temptile[2];
 		temptile[5] = !temptile[5];
+		ans++;
 	}
 	else if (x == 3)
 	{
@@ -37,6 +40,7 @@ void select_tile(int x)
 		temptile[3] = !temptile[3];
 		temptile[4] = !temptile[4];
 		temptile[6] = !temptile[6];
+		ans++;
 	}
 	else if (x == 4)
 	{
@@ -45,6 +49,7 @@ void select_tile(int x)
 		temptile[4] = !temptile[4];
 		temptile[5] = !temptile[5];
 		temptile[7] = !temptile[7];
+		ans++;
 	}
 	else if (x == 5)
 	{
@@ -52,12 +57,14 @@ void select_tile(int x)
 		temptile[4] = !temptile[4];
 		temptile[5] = !temptile[5];
 		temptile[8] = !temptile[8];
+		ans++;
 	}
 	else if (x == 6)
 	{
 		temptile[3] = !temptile[3];
 		temptile[6] = !temptile[6];
 		temptile[7] = !temptile[7];
+		ans++;
 	}
 	else if (x == 7)
 	{
@@ -65,28 +72,32 @@ void select_tile(int x)
 		temptile[6] = !temptile[6];
 		temptile[7] = !temptile[7];
 		temptile[8] = !temptile[8];
+		ans++;
 	}
-	else
+	else if (x == 8)
 	{
 		temptile[5] = !temptile[5];
 		temptile[7] = !temptile[7];
 		temptile[8] = !temptile[8];
+		ans++;
 	}
-	ans++;
+	else
+		return;
 }
 
-bool is_not_white()
+bool is_white()
 {
 	for (int i = 0; i < 9; i++)
 	{
 		if (temptile[i] == 1)
-			return (true);
+			return (false);
 	}
-	return (false);
+	return (true);
 }
 
 void perm(int n, int r, int depth)
 {
+	ans = 0;
 	if (depth == r)
 	{
 		for (int i = 0; i < r; i++)
@@ -94,9 +105,9 @@ void perm(int n, int r, int depth)
 			// select_tile(i);
 			cout << arr[i] << " ";
 			select_tile(arr[i]);
-			if (!is_not_white())
+			if (is_white())
 			{
-				cout << "*************" << arr[i] << endl;
+				cout << "*************" << ans << endl;
 				flag = 1;
 				return ;
 			}
