@@ -1,99 +1,117 @@
 #include <iostream>
-#include <queue>
-#include <utility>
+#include <vector>
 using namespace std;
 
-bool arr[3][3];
-bool temparr[3][3];
-bool visited[3][3];
-int minarr[9] = {0, };
+int arr[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+bool tile[9] = {0, };
+bool temptile[9] = {0, };
+
 int P;
-int ans;
-int cnt = 0;
+int ans = 0;
+int flag = 0;
 
-void select_tile(int x, int y)
+void select_tile(int x)
 {
-	temparr[x][y] = !temparr[x][y];
-	if (x - 1 >= 0)
-		temparr[x - 1][y] = !temparr[x - 1][y];
-	if (x + 1 < 3)
-		temparr[x + 1][y] = !temparr[x + 1][y];
-	if (y - 1 >= 0)
-		temparr[x][y - 1] = !temparr[x][y - 1];
-	if (y + 1 < 3)
-		temparr[x][y + 1] = !temparr[x][y + 1];
-	cnt++;
+	if (x == 0)
+	{
+		temptile[0] = !temptile[0];
+		temptile[1] = !temptile[1];
+		temptile[3] = !temptile[3];
+	}
+	else if (x == 1)
+	{
+		temptile[0] = !temptile[0];
+		temptile[1] = !temptile[1];
+		temptile[2] = !temptile[2];
+		temptile[4] = !temptile[4];
+	}
+	else if (x == 2)
+	{
+		temptile[1] = !temptile[1];
+		temptile[2] = !temptile[2];
+		temptile[5] = !temptile[5];
+	}
+	else if (x == 3)
+	{
+		temptile[0] = !temptile[0];
+		temptile[3] = !temptile[3];
+		temptile[4] = !temptile[4];
+		temptile[6] = !temptile[6];
+	}
+	else if (x == 4)
+	{
+		temptile[1] = !temptile[1];
+		temptile[3] = !temptile[3];
+		temptile[4] = !temptile[4];
+		temptile[5] = !temptile[5];
+		temptile[7] = !temptile[7];
+	}
+	else if (x == 5)
+	{
+		temptile[2] = !temptile[2];
+		temptile[4] = !temptile[4];
+		temptile[5] = !temptile[5];
+		temptile[8] = !temptile[8];
+	}
+	else if (x == 6)
+	{
+		temptile[3] = !temptile[3];
+		temptile[6] = !temptile[6];
+		temptile[7] = !temptile[7];
+	}
+	else if (x == 7)
+	{
+		temptile[4] = !temptile[4];
+		temptile[6] = !temptile[6];
+		temptile[7] = !temptile[7];
+		temptile[8] = !temptile[8];
+	}
+	else
+	{
+		temptile[5] = !temptile[5];
+		temptile[7] = !temptile[7];
+		temptile[8] = !temptile[8];
+	}
+	ans++;
 }
 
-bool is_white()
+bool is_not_white()
 {
-	bool flag = false;
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		for (int j = 0; j < 3; j++)
+		if (temptile[i] == 1)
+			return (true);
+	}
+	return (false);
+}
+
+void perm(int n, int r, int depth)
+{
+	if (depth == r)
+	{
+		for (int i = 0; i < r; i++)
 		{
-			if (temparr[i][j])
+			// select_tile(i);
+			cout << arr[i] << " ";
+			select_tile(arr[i]);
+			if (!is_not_white())
 			{
-				flag = true;
-				break;
+				cout << "*************" << arr[i] << endl;
+				flag = 1;
+				return ;
 			}
-		}
-	}
-	return flag;
-}
-
-int bfs(int x, int y)
-{
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			temparr[i][j] = arr[i][j];
-			visited[i][j] = false;
-			// cout << temparr[i][j] << " ";
-		}
-		// cout << endl;
-	}
-	select_tile(x, y);
-	if (!is_white())
-	{
-		// cout << 3 * x + y << " : " << cnt <<  endl;
-		return (cnt);
-	}
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			cout << temparr[i][j] << " ";
+			// 	return ;
 		}
 		cout << endl;
+		// ans += is_not_palindrome(tempstr);
+		return ;
 	}
-	queue<pair<int, int> > q;
-	q.push(make_pair(x, y));
-	visited[x][y] = true;
-	while (!q.empty())
+	for (int i = depth; i < n; i++)
 	{
-		int cur_x = q.front().first;
-		int cur_y = q.front().second;
-		cout << "cur_x : " << cur_x << " cur_y : " << cur_y << endl;
-		q.pop();
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				if (i != cur_x && j != cur_y)
-				{
-					q.push(make_pair(i, j));
-					visited[i][j] = true;
-					select_tile(i, j);
-					if (!is_white() || cnt > 8)
-						return (cnt);
-				}
-			}
-		}
+		swap(arr[depth], arr[i]);
+		perm(n, r, depth + 1);
+		swap(arr[depth], arr[i]);
 	}
-	cnt = 100;
-	return (cnt);
 }
 
 int main()
@@ -101,36 +119,28 @@ int main()
 	cin >> P;
 	while (P--)
 	{
-		ans = 2147483647;
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				char temp;
-				cin >> temp;
-				if (temp == '*')
-					arr[i][j] = true;
-				if (temp == '.')
-					arr[i][j] = false;
-				minarr[3 * i + j] = 0;
-			}
-		}
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				cnt = 0;
-				minarr[3 * i + j] = bfs(i, j);
-				cout << 3 * i + j << " : " << minarr[3 * i + j] << endl;
-			}
-		}
 		for (int i = 0; i < 9; i++)
 		{
-			cout << minarr[i] << " ";
-			if (ans > minarr[i] && minarr[i] > 0)
-				ans = minarr[i];
+			char c;
+			cin >> c;
+			if (c == '*')
+				tile[i] = 1;
+			else
+				tile[i] = 0;
 		}
-		cout << " ans : " << ans << endl;
+
+		for (int i = 0; i < 9; i++)
+		{
+			perm(9, i + 1, 0);
+			if (flag == 1)
+				break ;
+		}
+
+		cout << ans << "\n";
 	}
 	return (0);
 }
+
+//
+// ans = 0 temptile = tile
+// 조합으로 확인
