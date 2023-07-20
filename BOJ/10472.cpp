@@ -97,23 +97,36 @@ bool is_white()
 
 void perm(int n, int r, int depth)
 {
+	if (flag == 1)
+		return ;
 	ans = 0;
 	if (depth == r)
 	{
+		for (int j = 0; j < 9; j++)
+			temptile[j] = tile[j];
+		// cout << "select : ";
 		for (int i = 0; i < r; i++)
 		{
-			// select_tile(i);
-			cout << arr[i] << " ";
+			// cout << arr[i] << " ";
 			select_tile(arr[i]);
 			if (is_white())
 			{
-				cout << "*************" << ans << endl;
+				// cout << endl << "*************" << endl;
 				flag = 1;
 				return ;
+				// cout << ans << "\n";
+				// exit(0);
 			}
 			// 	return ;
 		}
-		cout << endl;
+		// cout << endl;
+		// for (int i = 0; i < 9; i++)
+		// {
+		// 	cout << temptile[i] << " ";
+		// 	if (i % 3 == 2)
+		// 		cout << endl;
+		// }
+		// cout << endl;
 		// ans += is_not_palindrome(tempstr);
 		return ;
 	}
@@ -130,6 +143,7 @@ int main()
 	cin >> P;
 	while (P--)
 	{
+		flag = 0;
 		for (int i = 0; i < 9; i++)
 		{
 			char c;
@@ -139,15 +153,33 @@ int main()
 			else
 				tile[i] = 0;
 		}
-
+		for (int j = 0; j < 9; j++)
+			temptile[j] = tile[j];
+		// if (is_white())
+		// {
+		// 	cout << 0 << "\n";
+		// 	// ans = 0;
+		// 	continue ;
+		// }
 		for (int i = 0; i < 9; i++)
 		{
+			for (int j = 0; j < 9; j++)
+				temptile[j] = tile[j];
 			perm(9, i + 1, 0);
 			if (flag == 1)
 				break ;
 		}
-
-		cout << ans << "\n";
+		// cout << "flag : " << flag << endl;
+		if (flag == 0)
+			cout << 0 << "\n";
+		else
+			cout << ans << "\n";
+		// for (int i = 0; i < 9; i++)
+		// {
+		// 	cout << tile[i] << " ";
+		// 	if (i % 3 == 2)
+		// 		cout << endl;
+		// }
 	}
 	return (0);
 }
@@ -155,3 +187,8 @@ int main()
 //
 // ans = 0 temptile = tile
 // 조합으로 확인
+
+
+// 0 0 0
+// 0 0 0
+// 0 0 0
