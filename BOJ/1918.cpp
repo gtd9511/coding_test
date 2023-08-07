@@ -1,11 +1,10 @@
 #include <iostream>
-#include <stack>
+#include <deque>
 using namespace std;
 
 int main()
 {
 	string str;
 	cin >> str;
-	stack<char> s;
-	
+
 }
