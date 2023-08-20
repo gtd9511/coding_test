@@ -13,20 +13,21 @@ long long count_one(long long x)
 		return x;
 	long long res = 0;
 	int i = 0;
-	long long idx = 1;
-	while (idx <= x)
+	// long long idx = 1;
+	while (arr2[i] <= x)
 	{
 		// cout << "d : " << idx << endl;
 		// cout << "x : " << x << endl;
 		// cout << "i : " << i << endl;
 		// cout << endl;
 		// res += 2 ^ (i - 1) + (2 ^ (i - 2)) * (i - 1);
-		idx *= 2;
+		// idx *= 2;
 		i++;
 	}
+	// cout << "x : " << x << " i : " << i << endl;
 	res += arr[i - 1];
-	// cout << "X : " << x << " i : " << i << endl;
-	int temp = x - idx / 2;
+	// cout << "X : " << x << " i : " << i << " res : " << res << endl;
+	long long temp = x - arr2[i - 1];
 	res += count_one(temp) + temp;
 	// x -= pow(2, i);
 	// res += count_one(x) + x;
@@ -50,8 +51,19 @@ int main()
 	// cout << count_one(A) << endl;
 	cout << count_one(B) - count_one(A - 1) << endl;
 	// cout << count_one(B) << endl;
-	// for (int i = 1; i < 17; i++)
-		// cout << count_one(i) << endl;
+	// for (long long i = 9999999999999990; i < 10000000000000000; i++)
+	// {
+		// if (count_one(i) - count_one(i - 1) == 2)
+			// break;
+		// cout << i << " " << count_one(i) << " " << count_one(i) - count_one(i - 1) << endl;
+	// }
+	// for (long long i = 135291469823; i < 200000000000; i++)
+	// {
+	// 	cout << "############ " << i << " " << count_one(i) << endl;
+	// }
+	// cout << "135291469823 : " << count_one(135291469823) << endl;
+	// cout << count_one(10000000000000000) << endl;
+
 	return (0);
 }
 
