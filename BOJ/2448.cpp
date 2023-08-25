@@ -2,60 +2,67 @@
 using namespace std;
 
 int N;
-void print_one()
-{
-	cout << "*";
-}
+char arr[3072][6143];
 
-void print_two()
+void recur(int i, int j, int n)
 {
-	cout << "* *";
+	if (n == 3)
+	{
+		arr[i][j] = '*';
+		arr[i + 1][j - 1] = arr[i + 1][j + 1] = '*';
+		for (int k = 0; k < 5; k++)
+			arr[i + 2][j - 2 + k] = '*';
+	}
+	else
+	{
+		recur(i, j, n / 2);
+		recur(i + n / 2, j + n / 2, n / 2);
+		recur(i + n / 2, j - n / 2, n / 2);
+	}
 }
+// // i = 0
+// // j = N - 1
+// // arr[i][j]
+// // arr[i+1][j-1] arr[i+1][j+1]
+// // arr[i+2][j-2]~arr[i+2][j+2]
+// 1, 12
+// 4, 9	4, 15
+// 7, 6	7, 18
+// 10, 3	10, 9	10, 15 10, 21
 
-void print_five()
-{
- 	cout << "*****";
-}
+// 0, 11
+// 3, 8	3, 14
+// 6, 5	6, 17
+// 9, 2	9,5 	9, 14	9, 20
+
 
 int main()
 {
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 	cin >> N;
 
 	for (int i = 0; i < N; i++)
-	{
-		for (int j = 0; j < N - i; j++)
-			cout << " ";
-		if (i % 3 == 0)
-		{
-			print_one();
-			// if (N % 2 == 0 && i > 2)
-			// {
-			// 	for (int j = 0; j < 2 * N - 2 * i - 1; j++)
-			// 		cout << " ";
-			// 	print_one();
-			// 	cout << 2 * N - 2 * i;
-			// }
-		}
-		if (i % 3 == 1)
-		{
-			print_two();
-			// for (int j = 0; j < i; j++)
-				// cout << " *";
-		}
-		if (i % 3 == 2)
-		{
-			print_five();
-			// for (int j = 0; j < i; j++)
-				// cout << "**";
-		}
+		for (int j = 0; j < 2 * N - 1; j++)
+			arr[i][j] = ' ';
 
+	// //set first tri
+	// arr[0][2N - 1] = '*';
+	// arr[1][2N - 2] = '*';
+	// arr[1][2N] = '*';
+	// arr[2][2N - 3] = '*';
+	// arr[2][2N - 2] = '*';
+	// arr[2][2N - 1] = '*';
+	// arr[2][2N] = '*';
+	// arr[2][2N + 1] = '*';
+
+	recur(0, N - 1, N);
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < 2 * N - 1; j++)
+			cout << arr[i][j];
 		cout << "\n";
-		//6k + 1 n - 1
-		//6k + 2
-		//6k + 3
-		//6k + 4
-		//6k + 5
-		//6k
 	}
 	return (0);
 }
@@ -107,3 +114,8 @@ int main()
 //	1 1 0 0 1 1
 //	1 0 1 0 1 0 1
 //  1 1 1 1 1 1 1 1
+//
+
+
+// https://transferhwang.tistory.com/316
+// https://githubseob.tistory.com/67
