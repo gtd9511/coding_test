@@ -1,65 +1,56 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-int arr[5][5] = {0, };
-int temp[5][5] = {0, };
-int prevarr[5][5] = {0, };
 int N;
 long long B;
+int arr[5][5];
+int tmp[5][5];
+int ans[5][5];
+
+void multiMatirx(int X[5][5], int Y[5][5])
+{
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			tmp[i][j] = 0;
+			for (int k = 0; k < N; k++)
+				tmp[i][j] += (X[i][k] * Y[k][j]);
+			tmp[i][j] %= 1000;
+		}
+	}
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+			X[i][j] = tmp[i][j];
+	}
+}
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
 	cin >> N >> B;
+
 	for (int i = 0; i < N; i++)
 	{
 		for (int j = 0; j < N; j++)
-		{
 			cin >> arr[i][j];
-			temp[i][j] = arr[i][j];
-		}
+		ans[i][i] = 1;
 	}
-	while (B--)
-	{
-		for (int i = 0; i < N; i++)
-		{
-			for (int j = 0; j < N; j++)
-			{
-				prevarr[i][j] = arr[i][j];
-				arr[i][j] = 0;
-			}
-		}
 
-		for (int i = 0; i < N; i++)
-		{
-			for (int j = 0; j < N; j++)
-			{
-				arr[i][j] += (prevarr[i][j] * temp[j][i]) % 1000;
-				cout << i << " " << j << ", " << j << " " << i << ", " << prevarr[i][j] << " " << temp[j][i] <<endl;
-				cout << i << " " << j << " " << arr[i][j] << endl;
-			}
-		}
+	while (B > 0)
+	{
+		if (B % 2)
+			multiMatirx(ans, arr);
+		multiMatirx(arr, arr);
+		B /= 2;
 	}
 
 	for (int i = 0; i < N; i++)
 	{
 		for (int j = 0; j < N; j++)
-			cout << (arr[i][j] % 1000) << " ";
-		cout << "\n";
+			cout << ans[i][j] << " ";
+		cout << endl;
 	}
-
 	return (0);
 }
-
-// 1 2		1 2
-// 3 4		3 4
-
-// 7 10	1 2
-// 15 22	3 4
-
-// 37 54	1 2
-// 81 118	3 4
-
 
