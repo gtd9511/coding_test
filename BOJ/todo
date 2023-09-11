@@ -26,6 +26,7 @@ study retry
 10816 map set
 11662 민호와 강호 삼분탐색
 1966  priority queue
+<<<<<<< HEAD
 
 
 
@@ -34,3 +35,7 @@ study retry
 1002
 1966
 17219
+=======
+1002 터렛
+1016 제곱 ㄴㄴ수
+>>>>>>> 0052c01d8a187530bc676bed94f4b9aa3c6921ba
