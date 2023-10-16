@@ -22,7 +22,7 @@ int main()
 			else if (j == 9)
 				dp[i][j] = dp[i - 1][8];
 			else
-				dp[i][j] = dp[i - 1][j - 1] + dp[i -1][j + 1];
+				dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j + 1];
 			dp[i][j] %= 1000000000;
 		}
 	}

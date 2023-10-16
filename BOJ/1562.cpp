@@ -1,21 +1,45 @@
 #include <iostream>
+#include <string.h>
 using namespace std;
 
-int N, dp[101][10][1024];
-
-
+int N, dp[101][10][1 << 10], ans = 0;
 
 int main()
 {
-	memset(dp, -1, sizeof(dp));
+	memset(dp, 0, sizeof(dp));
 	cin >> N;
 	if (N < 10)
 	{
 		cout << 0;
 		return (0);
 	}
+	for (int i = 1 ; i < 10; i++)
+		dp[1][i][1 << i] = 1;
 
+	for (int i = 1; i < N + 1; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			for (int k = 0; k < 1024; k++)
+			{
+				if (j == 0)
+					dp[i][j][k | (1 << j)] += dp[i - 1][1][k];
+				else if (j == 9)
+					dp[i][j][k | (1 << j)] += dp[i - 1][8][k];
+				else
+					dp[i][j][k | (1 << j)] += dp[i - 1][j - 1][k] + dp[i - 1][j + 1][k];
+				dp[i][j][k] %= 1000000000;
+			}
+		}
+	}
 
+	for (int i = 0; i < 10; i++)
+	{
+		ans += dp[N][i][1023];
+		ans %= 1000000000;
+	}
+
+	cout << ans;
 
 	return (0);
 }
@@ -45,42 +69,3 @@ int main()
 //		11	4	1	3
 //		12
 
-
-#include <stdio.h>
-using namespace std;
-
-#define mod 1000000000
-
-int n, i, j, k, ans;
-int dp[101][10][1 << 10];
-
-int main() {
-    scanf("%d", &n);
-
-    int full = (1 << 10) - 1;
-
-    for (j = 1; j <= 9; ++j)
-        dp[1][j][1 << j] = 1;
-
-    for (i = 2; i <= n; ++i) {
-        for (j = 0; j <= 9; ++j) {
-            for (k = 0; k <= full; ++k) {
-                if (j == 0)
-                    dp[i][0][k | (1 << 0)] = (dp[i][0][k | (1 << 0)] + dp[i - 1][1][k]) % mod;
-                else if (j == 9)
-                    dp[i][9][k | (1 << 9)] = (dp[i][9][k | (1 << 9)] + dp[i - 1][8][k]) % mod;
-                else {
-                    dp[i][j][k | (1 << j)] = (dp[i][j][k | (1 << j)] + dp[i - 1][j - 1][k]) % mod;
-                    dp[i][j][k | (1 << j)] = (dp[i][j][k | (1 << j)] + dp[i - 1][j + 1][k]) % mod;
-                }
-            }
-        }
-    }
-
-    for (j = 0; j <= 9; ++j)
-        ans = (ans + dp[n][j][full]) % mod;
-
-    printf("%d", ans);
-
-    return 0;
-}
