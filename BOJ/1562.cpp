@@ -33,6 +33,18 @@ int main()
 		}
 	}
 
+	cout << 0 << " : " << dp[N][0][1023] << endl;
+	cout << 1 << " : " << dp[N][1][1023] << endl;
+	cout << 2 << " : " << dp[N][2][1023] << endl;
+	cout << 3 << " : " << dp[N][3][1023] << endl;
+	cout << 4 << " : " << dp[N][4][1023] << endl;
+	cout << 5 << " : " << dp[N][5][1023] << endl;
+	cout << 6 << " : " << dp[N][6][1023] << endl;
+	cout << 7 << " : " << dp[N][7][1023] << endl;
+	cout << 8 << " : " << dp[N][8][1023] << endl;
+	cout << 9 << " : " << dp[N][9][1023] << endl;
+
+
 	for (int i = 0; i < 10; i++)
 	{
 		ans += dp[N][i][1023];
