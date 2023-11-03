@@ -1,14 +1,10 @@
 #include <iostream>
 using namespace std;
 
-int arr[10];
-
 int main()
 {
-	for (int i = -1; i < 10; i++)
-	{
-		arr[i] = i;
-		cout << i << " " << arr[i] << "\n";
-	}
+	int n, m, k;
+	cin >> n >> m >> k;
+	cout << k / m << " " << k - (m * (k / m) );
 	return (0);
 }
